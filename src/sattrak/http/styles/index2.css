@@ -1,0 +1,202 @@
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/MaterialIcons-Regular.ttf);
+  font-display: block;
+}
+
+.material-icons {
+  vertical-align: bottom;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+}
+
+.material-icons.md-dark {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.material-icons.md-light {
+  color: rgba(255, 255, 255, 1);
+}
+
+#location {
+  color: rgba(0, 0, 255, 0.7);
+  cursor: pointer;
+}
+
+#aurora {
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  left: -50%;
+  right: -50%;
+  top: -50%;
+  bottom: -50%;
+  z-index: -1000;
+}
+
+#aurora > div {
+  position: absolute;
+  border-radius: 50%;
+  filter: brightness(15%) blur(180px) saturate(500%);
+  opacity: 0.6;
+}
+
+.aurora-1 {
+  height: 90%;
+  width: 80%;
+  background-color: #ff057c;
+  left: -20%;
+  top: -10%;
+}
+
+.aurora-2 {
+  height: 80%;
+  width: 70%;
+  background-color: #800f86;
+  top: -12%;
+  right: -12%;
+}
+.aurora-3 {
+  height: 65%;
+  width: 80%;
+  background-color: #1619b9;
+  bottom: -15%;
+  right: -20%;
+}
+
+
+.aurora-4 {
+  height: 50%;
+  width: 75%;
+  background-color: #1ba8e9;
+  bottom: -10%;
+  left: -18%;
+}
+
+#aurora:after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+}
+
+footer li {
+  list-style-type: none;
+  cursor: pointer;
+  border-right: 1px solid #888;
+}
+footer li:last-of-type {
+  border-right: 0px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  text-align: center;
+  font-family: "Montserrat";
+}
+
+li {
+  list-style-type: none;
+  margin-bottom: 24px;
+}
+
+#info {
+  background-color: #333388;
+  color: white;
+}
+
+#info .key {
+  font-weight: bold;
+  text-align: right;
+  white-space: nowrap;
+}
+
+#info .value {
+  width: 100%;
+  text-align: left;
+  padding-left: 8px;
+  font-weight: 500;
+}
+
+#info,
+#map,
+#edit {
+  border-radius: 32px;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+  margin: 16px auto;
+  max-width: 480px;
+}
+
+#info {
+  padding: 16px;
+}
+
+#edit {
+  padding: 16px;
+}
+
+select,
+option,
+#start_time {
+  font-family: "Montserrat";
+}
+
+select {
+  font-size: 22px;
+  font-weight: 500;
+  padding: 6px 18px;
+  appearance: none;
+  border: 2px solid #aaa;
+  background-color: #ddd;
+}
+
+#start_time {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.home-location {
+  padding: 6px 8px;
+  font-size: 22px;
+  max-width: 128px;
+}
+
+#map {
+  background-image: url("../images/map.png");
+  aspect-ratio: 2 / 1;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: calc(100% - 32px);
+}
+
+#info,
+#edit {
+  width: calc(100% - 64px);
+  max-width: 448px;
+}
+
+.toggle-switch {
+  height: 1.5rem;
+  width: 4.5rem;
+  border-radius: 0.75rem;
+}

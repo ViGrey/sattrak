@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE rfc SYSTEM "rfc2629-xhtml.ent">
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-sattrak-v1-00"
+  ipr="none"
+  obsoletes=""
+  updates=""
+  submissionType="independent"
+  xml:lang="en"
+  tocInclude="true"
+  tocDepth="4"
+  symRefs="true"
+  sortRefs="true"
+  version="3">
+  <front>
+    <title abbrev="SatTrak Controller Input Specification">SatTrack Controller Input Specification Version 1</title>
+    <seriesInfo name="Internet-Draft" stream="independent" value="draft-startrak-v1-00" status="informational"/>
+    <author fullname="Vi Grey" initials="V." surname="Grey">
+      <organization>VG Interactive</organization>
+      <address>
+        <email>vi@vigrey.com</email>
+        <uri>https://vigrey.com</uri>
+      </address>
+    </author>
+    <date year="2022"/>
+    <area>General</area>
+    <workgroup>Independent</workgroup>
+    <abstract>
+      <t></t>
+    </abstract>
+  </front>
+  <middle>
+    <section numbered="true" toc="default">
+      <name>Introduction</name>
+      <section numbered="true" toc="default">
+        <name>Overview and Preliminaries</name>
+        <t>The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>", "<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>", "<bcp14>SHALL NOT</bcp14>", "<bcp14>SHOULD</bcp14>", "<bcp14>SHOULD NOT</bcp14>", "<bcp14>RECOMMENDED</bcp14>", "<bcp14>NOT RECOMMENDED</bcp14>", "<bcp14>MAY</bcp14>", and "<bcp14>OPTIONAL</bcp14>" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.</t>
+
+        <section numbered="true" toc="default">
+          <name>Notation and Vocabulary</name>
+          <t>Data Types:</t>
+          <ul spacing="compact" empty="true">
+            <li>(S) = String</li>
+            <li>(A) = Binary Data</li>
+            <li>(I) = Signed Integer</li>
+            <li>(N) = Unsigned Integer</li>
+            <li>(D) = Binary Coded Decimal Number</li>
+            <li>(B) = Boolean</li>
+          </ul>
+          <t>We use the terms <strong>byte</strong> and <strong>octet</strong> interchangeably in this document.</t>
+          <t>Unless specified otherwise, all multi-octet binary coded decimal numbers, unsigned integers, and signed integers are big-endian.</t>
+          <t>String values <bcp14>MUST</bcp14> use UTF-8 encoding.  If an example of a string value is given, the example will be between quotation marks.  The quotation marks are not included in the string.  Not all content between quotations will be string value examples, so be aware of that when continuing through this document.</t>
+          <t>Binary coded decimal numbers, Unsigned integers, and signed integers can have different bit widths.  For instance, an 8-bit signed integer can be used in one part of the specification and a 64-bit signed integer can be used in another part of the specification.</t>
+          <t>Boolean values <bcp14>MUST</bcp14> be a single octet with the value of <tt>0</tt> for <strong>FALSE</strong> or <tt>1</tt> for <strong>TRUE</strong>.</t>
+          <dl>
+            <dt><tt>[N octets]</tt></dt> <dd>A sequence of octets with a length of N</dd>
+            <dt><tt>[00 7F FF]</tt></dt> <dd>A sequence of octets <tt>00</tt>, <tt>7F</tt>, and <tt>FF</tt> in that order.</dd>
+            <dt><tt>[80 FF (01 02)]</tt></dt> <dd>A sequence of octets <tt>80</tt>, <tt>FF</tt>, <tt>01</tt>, and <tt>02</tt> in that order with visual grouping of <tt>01</tt> and <tt>02</tt>.  The visual grouping are only used as a visual indicator to imply that the bytes are related to each other in some way.</dd>
+            <dt><strong>0-indexed</strong></dt> <dd>When counting sequentially, start counting at 0.</dd>
+            <dt><strong>1-indexed</strong></dt> <dd>When counting sequentially, start counting at 1.</dd>
+          </dl>
+          <t>In packet diagrams, a single octet is represented with a box like this:</t>
+          <artwork><![CDATA[
+      +-----+
+      | Var | <-- Vertical bars MAY be missing
+      +-----+]]>
+          </artwork>
+          <ul spacing="compact" empty="true">
+            <li><strong>Var</strong> is a variable name.</li>
+          </ul>
+          <t>In packet diagrams, an arbitrary number of octets are represented with a box like this:</t>
+          <artwork><![CDATA[
+      +=====+
+      | Var |
+      +=====+]]>
+          </artwork>
+          <ul spacing="compact" empty="true">
+            <li><strong>Var</strong> is a variable name.</li>
+          </ul>
+          <t>In packet diagrams, boxes can be connected like these examples:</t>
+          <artwork><![CDATA[
+      +-----------+-----------+
+      | Var 1 (B) | Var 2 (I) |
+      +-----------+-----------+]]>
+          </artwork>
+          <ul spacing="compact" empty="true">
+            <li>In this example, <strong>Var 1</strong> is a 1 octet long boolean value and <strong>Var 2</strong> is a 1 octet long signed integer.</li>
+          </ul>
+          <artwork><![CDATA[
+      +-----+-----+===========+
+      | Var 1 (N) | Var 2 (S) |
+      +-----+-----+===========+]]>
+          </artwork>
+          <ul spacing="compact" empty="true">
+            <li>In this example, <strong>Var 1</strong> is a 2 octet long unsigned integer and <strong>Var 2</strong> is an arbitrary octet length string.</li>
+          </ul>
+          <t>In packet diagrams, boxes <bcp14>MAY</bcp14> have relative offset values above them like in the following example:</t>
+          <artwork><![CDATA[
+         0     1       2...
+      +-----+-----+===========+
+      | Var 1 (N) | Var 2 (S) |
+      +-----+-----+===========+]]>
+          </artwork>
+          <ul spacing="compact" empty="true">
+            <li>In this example, <strong>Var 1</strong> is a 2 octet long unsigned integer and <strong>Var 2</strong> is an arbitrary octet length string.</li>
+          </ul>
+          <t>Packet diagrams <bcp14>MAY</bcp14> be split into multiple lined sections like in the following example:</t>
+          <artwork><![CDATA[
+            0           1           2           3
+      +-----------+-----------+-----------+-----------+
+      | Var 1 (N) | Var 2 (I) | Var 3 (B) | Var 4 (I) | ...
+      +-----------+-----------+-----------+-----------+
+            4           5
+      +-----------+===========+
+      | Var 5 (N) | Var 6 (S) |
+      +-----------+===========+]]>
+          </artwork>
+          <ul spacing="compact" empty="true">
+            <li>In this example, enough variable boxes are in the packet diagram to require being split into 2 sections to take up less horizontal space in this documentation.  The packet diagram is seperated by an ellipsis (<tt>...</tt>) on the same text row as the variable names to signify that the packet diagram is continuing.</li>
+          </ul>
+        </section>
+      </section>
+
+    </section>
+    <section numbered="true" toc="default">
+      <name>Packets</name>
+      <section numbered="true" toc="default">
+        <name>Location Packet</name>
+        <t>Location packets <bcp14>MUST</bcp14> be in the following format:</t>
+        <artwork><![CDATA[
+           0          1          2      4  5  6  7    8     9
+      +----------+---------+-----------+--+--+--+--+-----+-----+
+      | Sync (A) | Day (D) | Month (N) | Year (D)  | Hour (D)  | ...
+      +----------+---------+-----------+--+--+--+--+-----+-----+
+         10     11     12     13   14 15 16 17 18 19 20 21
+      +------+------+------+------+--+--+--+--+--+--+--+--+
+      | Minute (D)  | Second (D)  |     Altitude (D)      | ...
+      +------+------+------+------+--+--+--+--+--+--+--+--+
+       22 23 24 25 26 27 28 29 30 31  32  33  34  35 36 37 38 39
+      +--+--+--+--+--+--+--+--+--+---+---+---+---+--+--+--+--+--+
+      |       NORAD ID (D)       |  Sat Lat (D)  | Sat Lon (D)  | ...
+      +--+--+--+--+--+--+--+--+--+---+---+---+---+--+--+--+--+--+
+              40
+      +----------------+
+      | Sat Status (A) |
+      +----------------+
+
+      Sync (Binary Data)                      [1 Octet]
+      Day (Binary-Coded Decimal Number)       [2 Octets]
+      Month (Unsigned Integer)                [1 Octet]
+      Year (Binary-Coded Decimal Number)      [2 Octets]
+      Hour (Binary-Coded Decimal Number)      [2 Octets]
+      Minute (Binary-Coded Decimal Number)    [2 Octets]
+      Second (Binary-Coded Decimal Number)    [2 Octets]
+      Altitude (Binary Coded Decimal)         [8 octets]
+      NORAD ID (Binary Coded Decimal)         [9 octets]
+      Sat Lat (Binary-Coded Decimal Number)   [4 Octets]
+      Sat Lon (Binary-Coded Decimal Number)   [5 Octets]
+      Sat Status (Binary Data)                [1 Octet]
+         7654 3210
+         ---- ----
+         ||    |||
+         ||    ||+- Time Is UTC (1 if true otherwise 0)
+         ||    |+-- Time is 12 Hour (1 if true otherwise 0)
+         ||    +--- Time is PM (1 if true otherwise 0)
+         |+-------- Sat Longitude East (1 if lon East otherwise 0)
+         +--------- Sat Latitude North (1 if lat North otherwise 0)]]>
+        </artwork>
+        <dl newline="true">
+          <dt><strong>Sync</strong></dt>
+          <dd>Binary data that <bcp14>MUST</bcp14> be the value of <tt>[F0]</tt>.</dd>
+          <dt><strong>UTC</strong></dt>
+          <dd>Boolean value that is <strong>TRUE</strong> if the time is in UTC (timezone offset of 0000) otherwise is <strong>FALSE</strong>.</dd>
+          <dt><strong>Day</strong></dt>
+          <dd>Day value for the satellite location data.  <strong>Day</strong> <bcp14>MUST</bcp14> be a binary-coded decimal value at or between <tt>[00 01]</tt> (1) and <tt>[03 01] (31)</tt>.</dd>
+          <dt><strong>Month</strong></dt>
+          <dd>Month number for the satellite location data.  <strong>Month</strong> <bcp14>MUST</bcp14> be at or between the values of 1 and 12.</dd>
+          <dt><strong>Year</strong></dt>
+          <dd>Year value for the satellite location data.  <strong>Year</strong> <bcp14>MUST</bcp14> be a binary-coded decimal value at or between [00 00 00 01] (1) and [09 09 09 09] (9999).</dd>
+          <dt><strong>Hour</strong></dt>
+          <dd>24-hour system hour number for the satellite location data.  <strong>Hour</strong> <bcp14>MUST</bcp14> be a binary-coded decimal value at or between <tt>[00 00]</tt> (0) and <tt>[02 03]</tt> (23).</dd>
+          <dt><strong>Minute</strong></dt>
+          <dd>Minute number for the satellite location data.  <strong>Minute</strong> <bcp14>MUST</bcp14> be a binary-coded decimal value at or between <tt>[00 00]</tt> (0) and <tt>[05 09]</tt> (59).</dd>
+          <dt><strong>Second</strong></dt>
+          <dd>Second number for the satellite location data.  <strong>Second</strong> <bcp14>MUST</bcp14> be a binary-coded decimal value at or between <tt>[00 00]</tt> (0) and <tt>[05 09]</tt> (59).</dd>
+          <dt><strong>South</strong></dt>
+          <dd>Boolean value that is <strong>TRUE</strong> if the latitude for the satellite location data is negative (latitude is in the Western Hemisphere) otherwise is <strong>FALSE</strong>.</dd>
+          <dt><strong>Latitude</strong></dt>
+          <dd>Absolute value of the latitude for the satellite location data multiplied by 100.  No decimal values are provided after the multiplication by 100.  <strong>Latitude</strong> <bcp14>MUST</bcp14> be a binary-coded decimal value at or between  <tt>[00 00 00 00]</tt> (0) and <tt>[09 00 00 00]</tt> (9000).</dd>
+          <dt><strong>West</strong></dt>
+          <dd>Boolean value that is <strong>TRUE</strong> if the longitude for the satellite location data is negative (longitude is in the Southern Hemisphere) otherwise is <strong>FALSE</strong>.</dd>
+          <dt><strong>Longitude</strong></dt>
+          <dd>Absolute value of the longitude for the satellite location data multiplied by 100.  No decimal values are provided after the multiplication by 100.  <strong>Longitude</strong> <bcp14>MUST</bcp14> be a binary-coded decimal value at or between <tt>[00 00 00 00 00]</tt> (0) and <tt>[01 08 00 00 00]</tt> (18000).</dd>
+        </dl>
+        <section numbered="true" toc="default">
+          <name>Example</name>
+          <t>The information of <strong>February 27, 2022 02:46:18 UTC, Latitude: 21.56 N, Longitude: 18.70 S</strong> will result in a Location packet of <tt>[(F0) (01) (02 07) (02) (02 00 02 02) (00 02) (04 06) (01 08) (00) (02 01 05 06) (01) (00 01 08 07 00)]</tt>.</t>
+        </section>
+      </section>
+      <section numbered="true" toc="default">
+        <name>Home/Sun/Moon Packet</name>
+        <t>Home/Sun/Moon packets <bcp14>MUST</bcp14> be in the following format:</t>
+        <artwork><![CDATA[
+           0            1              2              3
+      +----------+--------------+--------------+-------------+
+      | Sync (A) | Home Lat (N) | Home Lon (N) | Sun Lat (N) | ...
+      +----------+--------------+--------------+-------------+
+             4             5              6
+      +-------------+--------------+--------------+
+      | Sun Lon (N) | Moon Lat (N) | Moon Lon (I) | ...
+      +-------------+--------------+--------------+
+              7                     8
+      +----------------+--------------------------+
+      | Moon Phase (U) | Sun/Moon Lon Pos/Neg (A) |
+      +----------------+--------------------------+
+
+      Sync (Binary Data)                      [1 octet]
+      Home Lat (Unsigned Integer)             [1 octet]
+      Home Lon (Signed Integer)               [1 octet]
+      Sun Lat (Unsigned Integer)              [1 octet]
+      Sun Lon (Signed Integer)                [1 octet]
+      Moon Lat (Unsigned Integer)             [1 octet]
+      Moon Lon (Signed Integer)               [1 octet]
+      Moon Phase (Unsigned Integer)           [1 octet]
+      Home/Sun/Moon Status                    [1 octet]
+         7654 3210
+         ---- ----
+         |||| | ||
+         |||| | |+- Enable Home (1 if true otherwise 0)
+         |||| | |+- Enable Sun (1 if true otherwise 0)
+         |||| | +-- Enable Moon (1 if true otherwise 0)
+         |||| +---- Home Longitude East (1 if lon East otherwise 0)
+         |||+------ Sun Longitude East (1 if lon East otherwise 0)
+         ||+------- Moon Longitude East (1 if lon East otherwise 0)
+         |+-------- Sat In Daylight (1 if true otherwise 0)
+         +--------- Sat In View (1 if true otherwise 0)]]>
+
+
+        </artwork>
+        <dl newline="true">
+          <dt><strong>Sync</strong></dt>
+          <dd>Binary data that <bcp14>MUST</bcp14> be the value of <tt>[F5]</tt>.</dd>
+          <dt><strong>Sun Lat</strong></dt>
+          <dd>Latitude of the Sun + 90.</dd>
+          <dt><strong>Sun Lon Diff</strong></dt>
+          <dd>Longitude of the Sun minus the Longitude of the Satellite.  If difference is below -100 or above 100, the value for Sun Lat <bcp14>MUST</bcp14> be between or at [64] (100) and [9C] (156, which is -100).</dd>
+          <dt><strong>Moon Lat</strong></dt>
+          <dd>Latitude of the Moon + 90.</dd>
+          <dt><strong>Moon Lon Diff</strong></dt>
+          <dd>Longitude of the Moon minus the Longitude of the Satellite.  If difference is below -100 or above 100, the value for Sun Lat <bcp14>MUST</bcp14> be between or at [64] (100) and [9C] (156, which is -100).</dd>
+          <dt><strong>Moon Phase</strong></dt>
+          <dd>Value between and including 0 and 15 for current moon phase.  0 is a New Moon, 1 is Waxing Crescent with 12.5% illumination, 2 is Waxing Crescent with 25% illumination, 3 is Waxing Crescent with 37.5% illumination, 4 is a First Quarter Moon, 5 is Waxing Gibbous with 62.5% illumination, 6 is Waxing Gibbous with 75% illumination, 7 is Waxing Gibbous with 87.5% illumination, 8 is a Full Moon, 9 is Waning Gibbous with 87.5% illumination, 10 is Waning Gibbous with 75% illumination, 11 is Waning Gibbous with 62.5% illumination, 12 is a Third Quarter Moon, 13 is Waning Crescent with 37.5% illumination, 14 is Waning Crescent with 25% illumination, and 15 is Waning Crescent with 12.5% illumination.</dd>
+        </dl>
+        <section numbered="true" toc="default">
+          <name>Example</name>
+          <t>The Sun and Moon information of <strong>Sun Latitude: -7, Sun Longitude: Earth Station - 16, Moon Latitude: 12, Moon Longitude: Earth Station - 22, Moon Phase: New Moon</strong> will result in a Sun/Moon packet of <tt>[(FC) (44) (F0) (66) (EA) (00) (44) (F0)</tt>.</t>
+          <t>The Sun and Moon information of <strong>Moon Latitude: 0, Moon Longitude: Earth Station - 140, Moon Phase: First Quarter Moon, Sun Latitude: -4, Sun Longitude: Earth Station - 64, Moon Latitude: 0, Moon Longitude: Earth Station - 140, and Moon Phase: First Quarter Moon</strong> will result in a Sun/Moon packet of <tt>[(FC) (56) (C0) (5A) (80) (04)</tt>.</t>
+        </section>
+      </section>
+    </section>
+    <section numbered="true" toc="default">
+      <name>Controller Input</name>
+      <artwork><![CDATA[
+      7654 3210
+      ---- ----
+      |||| ||||
+      |||| |||+- Right on D-Pad (1 if Pressed otherwise 0)
+      |||| ||+-- Left on D-Pad (1 if Pressed otherwise 0)
+      |||| |+--- Down on D-Pad (1 if Pressed otherwise 0)
+      |||| +---- Up on D-Pad (1 if Pressed otherwise 0)
+      |||+------ Start Button (1 if Pressed otherwise 0)
+      ||+------- Select Button (1 if Pressed otherwise 0)
+      |+-------- B Button (1 if Pressed otherwise 0)
+      +--------- A Button (1 if Pressed otherwise 0)]]>
+      </artwork>
+      <section numbered="true" toc="default">
+        <name>Example</name>
+        <t>To send the byte value <tt>[F5]</tt>, the following buttons <bcp14>MUST</bcp14> to be pressed:</t>
+        <ul spacing="compact" empty="true">
+          <li><strong>A</strong></li>
+          <li><strong>B</strong></li>
+          <li><strong>Start</strong></li>
+          <li><strong>Select</strong></li>
+          <li><strong>Down</strong></li>
+          <li><strong>Right</strong></li>
+        </ul>
+        <t>and the following buttons <bcp14>MUST NOT</bcp14> to be pressed:</t>
+        <ul spacing="compact" empty="true">
+          <li><strong>Up</strong></li>
+          <li><strong>Left</strong></li>
+        </ul>
+      </section>
+    </section>
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        <xi:include href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+        <xi:include href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+      </references>
+    </references>
+    <section numbered="false" toc="default">
+      <name>Copyright Notice</name>
+      <t>Copyright (c) 2022, Vi Grey</t>
+      <t>All rights reserved.</t>
+      <t>Redistribution and use of this documentation in source (XML format) and/or "compiled" forms (TXT, PDF, HTML, etc), with or without modification, are permitted provided that the following conditions are met:</t>
+      <ol>
+        <li>Redistributions of source code (XML format) of this documentation must retain the above copyright notice, this list of conditions, and the following disclaimer in the documentation.</li>
+        <li>Redistributions in compiled form (Converted to TXT, PDF, HTML, and other formats) of this documentation must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation.</li>
+      </ol>
+      <t>THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR(S) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
+    </section>
+    <!-- Change Log
+
+draft 00 - 2022-01-20   VG    Initial draft
+
+    -->
+  </back>
+</rfc>
+
+

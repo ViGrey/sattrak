@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
+    <link rel="stylesheet" href="/styles/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/styles/flatpickr/themes/airbnb.css">
+    <link rel="stylesheet" href="/styles/index.css">
+  </head>
+  <body>
+    <div id="starfield"></div>
+    <header>
+      <span id="logo">
+        SAT|<span style="font-weight: 800;">trak</span>
+      </span>
+      <span id="login_logout" class="material-icons">lock</span>
+    </header>
+    <div class="page" id="info_page">
+      <section class="no-padding">
+        <div id="map">
+
+          <div id="satellite_icon_negative">
+            <span class="material-icons" value="satellite_alt">satellite_alt</span>
+          </div>
+          <div id="satellite_icon">
+            <span class="material-icons" value="satellite_alt">satellite_alt</span>
+          </div>
+          <div id="satellite_icon_positive">
+            <span class="material-icons" value="satellite_alt">satellite_alt</span>
+          </div>
+
+          <div id="home_icon_negative">
+            <span class="material-icons" value="person_pin_circle">person_pin_circle</span>
+          </div>
+          <div id="home_icon">
+            <span class="material-icons" value="person_pin_circle">person_pin_circle</span>
+          </div>
+          <div id="home_icon_positive">
+            <span class="material-icons" value="person_pin_circle">person_pin_circle</span>
+          </div>
+
+
+  
+          <div id="sun_icon_negative">
+            <span class="material-icons" value="light_mode">light_mode</span>
+          </div>
+          <div id="sun_icon">
+            <span class="material-icons" value="light_mode">light_mode</span>
+          </div>
+          <div id="sun_icon_positive">
+            <span class="material-icons" value="light_mode">light_mode</span>
+          </div>
+  
+          <div id="moon_icon_negative">
+            <div class="moon"></div>
+            <div class="moon-disk"></div>
+          </div>
+          <div id="moon_icon">
+            <div class="moon"></div>
+            <div class="moon-disk"></div>
+          </div>
+          <div id="moon_icon_positive">
+            <div class="moon"></div>
+            <div class="moon-disk"></div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2 id="sat_name"></h2>
+        <h4 id="sat_norad_id"></h4>
+        <div id="sat_time"></div>
+        <div id="sat_altitude"></div>
+        <div id="sat_latitude"></div>
+        <div id="sat_longitude"></div>
+        <div id="home_latitude"></div>
+        <div id="home_longitude"></div>
+        <div id="sat_in_sunlight"></div>
+      </section>
+      <section>
+        <h2>Sun</h2>
+        <h4></h4>
+        <div id="sun_latitude"></div>
+        <div id="sun_longitude"></div>
+      </section>
+      <section>
+        <h2>Moon</h2>
+        <h4></h4>
+        <div id="moon_latitude"></div>
+        <div id="moon_longitude"></div>
+        <div id="moon_illumination"></div>
+      </section>
+    </div>
+    <div class="page" id="devices_page">
+      <!--<section>
+        <h3>No Devices Found</h3>
+      </section>-->
+    </div>
+    <div class="page" id="modify_page">
+      <section id="modify_satellite">
+        <div class="toggle-switch"></div>
+
+        <h2>Satellite</h2>
+        <h4></h4>
+        <input type="text">
+        <br>
+        <div class="button">SAVE</div>
+        <div class="button">UNDO</div>
+      </section>
+      <section id="modify_home_location">
+        <h2>Home Location</h2>
+        <h4></h4>
+        Latitude: <input id="edit_home_latitude" type="number" value="0.000"> 
+        <br>
+        Longitude: <input id="edit_home_longitude" type="number" value="0.000">
+        <br>
+        <div class="button save">SAVE</div>
+        <div class="button undo">UNDO</div>
+      </section>
+      <section id="modify_initial_date_time">
+        <h2>Initial Date/Time</h2>
+        <h4></h4>
+        <input id="edit_datetime" type="rext">
+        <br>
+        <input id="time_current" type="checkbox"> Set To Current Time 
+        <br>
+        <input id="set_utc" type="checkbox"> Time is in UTC
+        <br>
+        <div class="button save">SAVE</div>
+        <div class="button undo">UNDO</div>
+      </section>
+      <section id="modify_device_settings">
+        <h2>Device Settings</h2>
+        <h4></h4>
+        <input id="set_utc" type="checkbox"> Automatically Start Devices
+        <br>
+        <div class="button save">SAVE</div>
+        <div class="button undo">UNDO</div>
+      </section>
+    </div>
+    <footer>
+      <li class="item">
+        <span class="icon material-icons">satellite_alt</span>
+        <br>
+        <span class="caption">Info</span>
+      </li>
+      <li class="item">
+        <span class="icon material-icons">cable</span>
+        <br>
+        <span class="caption">Devices</span>
+      </li>
+      <li class="item">
+        <span class="icon material-icons">edit</span>
+        <br>
+        <span class="caption">Modify</span>
+      </li>
+    </footer>
+    <script src="/scripts/flatpickr/flatpickr.min.js"></script>
+    <script src="/scripts/info.js"></script>
+    <script src="/scripts/devices.js"></script>
+    <script src="/scripts/modify.js"></script>
+    <script src="/scripts/index.js"></script>
+  </body>
+</html>
+
